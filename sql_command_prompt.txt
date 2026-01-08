@@ -515,12 +515,12 @@ Functions ==>
 
 provide a simple query for customers table, with  function AVG()
 
-SELECT AVG(total_amount ) AS average_order FROM orders;
+SELECT AVG(total_amount) AS average_order FROM orders;
 =============================
 
 provide a simple query for customers table, with  function SUM()
 
-SELECT SUM(total_amount ) AS average_order FROM orders;
+SELECT SUM(total_amount) AS average_order FROM orders;
 
 =============================
 
@@ -651,10 +651,9 @@ provide a simple query for customers table, with  keyword COMMIT
 fundamental concept in database integrity known as ACID properties
 
 ALTER TABLE orders  ADD COLUMN status VARCHAR(20);
-ALTER TABLE public.orders  ADD COLUMN status VARCHAR(20);
 
 BEGIN;
-UPDATE public.orders  SET  status = 'Premium'  WHERE total_amount > 1000;
+UPDATE orders  SET  status = 'Premium'  WHERE total_amount > 1000;
 COMMIT;
 
 =============================
@@ -664,8 +663,8 @@ provide a simple query for customers table, with  keyword ROLLBACK
 command is used to undo all changes made during the current transaction
 
 BEGIN
-UPDATE public.orders SET total_amount = total_amount * 1.1;
-SELECT * FROM public.orders LIMIT 10; -- Inspect the math
+UPDATE orders SET total_amount = total_amount * 1.1;
+SELECT * FROM orders LIMIT 10; -- Inspect the math
 ROLLBACK; -- Undo the changes after inspection
 
 
@@ -673,11 +672,11 @@ ROLLBACK; -- Undo the changes after inspection
 
 provide a simple query for customers table, with   	COMMIT 	keyword
 
-BEGIN;
-UPDATE public.customers  SET country = 'CA'  WHERE country = 'Canada';
+BEGIN
+UPDATE customers  SET country = 'CA'  WHERE country = 'Canada';
 COMMIT;
 
-SELECT * FROM public.customers;
+SELECT * FROM customers;
 =============================
 provide a simple query for customers table, with   	ROLLBACK 	keyword
 
