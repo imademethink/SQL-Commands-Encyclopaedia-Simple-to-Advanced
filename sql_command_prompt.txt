@@ -1,0 +1,802 @@
+
+
+you are an expert in database. pls have docker-compose file which uses postgres:alpine image.
+have 2 to 3 databases which are interlinked e.g. Ecommerce Product data.
+each table should have relevant 5 to 6 coloumns.
+insert relevant 200 records in each table.
+
+I want practice all types SQL queries in these tables.
+
+https://gemini.google.com/share/0d05e612bab8
+
+==========
+docker-compose up -d
+docker-compose down
+==========
+
+available tables ===>
+
+customers
+orders
+products
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+============================================================
+============================================================
+DQL ==> Data Query Language
+
+SELECT * FROM customers;
+SELECT first_name, last_name FROM customers;
+
+============================================================
+============================================================
+DML ==> Data Manipulation Language
+
+INSERT INTO customers (first_name, last_name, email, country) VALUES ('Rob', 'Miller', 'rob.miller@example.com', 'USA');
+SELECT * FROM customers WHERE email = 'rob.miller@example.com';
+
+UPDATE customers SET email = 'new_rob.miller@example.com' WHERE email = 'rob.miller@example.com';
+SELECT * FROM customers WHERE email = 'rob.miller@example.com';
+
+DELETE FROM customers WHERE email = 'new_rob.miller@example.com';
+SELECT count(*) FROM customers WHERE email = 'new_rob.miller@example.com';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+============================================================
+============================================================
+DDL ==> Data Definition Language
+
+provide a simple query for customers table, with   	CREATE 	keyword
+
+CREATE TABLE reviews (
+    id SERIAL PRIMARY KEY,
+    product_id INTEGER REFERENCES products(id) ON DELETE CASCADE,
+    customer_id INTEGER REFERENCES customers(id) ON DELETE SET NULL,
+    rating INTEGER NOT NULL,
+    comment TEXT,
+    review_date DATE DEFAULT CURRENT_DATE, -- Ensure this comma exists
+    CONSTRAINT check_rating_range CHECK (rating >= 1 AND rating <= 5)
+);
+
+=============================
+provide a simple query for customers table, with   	DROP 	keyword
+
+DROP TABLE reviews;
+
+=============================
+provide a simple query for customers table, with   	ALTER 	keyword
+
+
+ALTER TABLE customers  ADD COLUMN phone_number VARCHAR(20);
+
+=============================
+provide a simple query for customers table, with   	TRUNCATE  	keyword
+
+TRUNCATE TABLE customers;
+
+
+=============================
+provide a simple query for customers table, with   	RENAME  	keyword
+
+ALTER TABLE customers RENAME COLUMN country TO territory;
+ALTER TABLE customers RENAME COLUMN territory TO country;
+ALTER TABLE customers RENAME TO clients;
+ALTER TABLE clients RENAME TO customers;
+
+=============================
+provide a simple query for customers table, with   	VIEW  	keyword
+
+CREATE VIEW customer_contacts AS SELECT first_name,  last_name, email, country FROM customers;
+
+SELECT * FROM customer_contacts WHERE country = 'Canada';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+============================================================
+============================================================
+
+DQL ==> Data Query Language extended
+
+provide a simple query for customers table, with   	WHERE  	keyword
+
+SELECT * FROM customer_contacts WHERE country = 'Canada';
+
+=============================
+provide a simple query for customers table, with   	GROUP BY  	keyword
+
+
+SELECT  category,  SUM(price * stock_quantity) AS inventory_value
+FROM products WHERE category IS NOT NULL GROUP BY category;
+
+=============================
+provide a simple query for customers table, with   	ALIAS  AS 	keyword
+
+
+SELECT 
+    c.first_name, 
+    o.order_date, 
+    o.total_amount
+FROM customers AS c
+JOIN orders AS o ON c.id = o.customer_id;
+
+=============================
+provide a simple query for customers table, with   	HAVING  	keyword
+
+SELECT 
+    country, 
+    COUNT(*) AS customer_count
+FROM customers
+GROUP BY country
+HAVING COUNT(*) > 40
+ORDER BY customer_count DESC;
+
+=============================
+provide a simple query for customers table, with   	DISTINCT 	keyword
+provide a simple query for customers table, with   	ORDER BY 	keyword
+
+
+SELECT DISTINCT country
+FROM customers
+ORDER BY country ASC;
+
+=============================
+provide a simple query for customers table, with LIMIT keyword
+
+SELECT * FROM customers LIMIT 5;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+============================================================
+============================================================
+
+DQL ==> Data Query Language extended part 2
+
+WHERE keyword with conditions
+
+=============================
+provide a simple query for customers table, with   	EXISTS 	keyword
+
+SELECT first_name, last_name, email
+FROM customers c
+WHERE EXISTS (
+    SELECT 1 
+    FROM orders o 
+    WHERE o.customer_id = c.id
+);
+
+
+=============================
+provide a simple query for customers table, with IN keyword
+
+SELECT 
+    first_name, 
+    last_name, 
+    country
+FROM customers
+WHERE country IN ('USA', 'UK', 'India')
+ORDER BY country;
+
+=============================
+provide a simple query for customers table, with OR keyword
+
+SELECT 
+    first_name, 
+    last_name, 
+    country
+FROM customers
+WHERE country = 'Germany' 
+   OR country = 'Canada'
+ORDER BY country ASC;
+=============================
+provide a simple query for customers table, with AND keyword
+
+SELECT first_name, last_name,  country,  created_at
+FROM customers WHERE country = 'USA'  AND created_at > '2025-01-01';
+=============================
+
+provide a simple query for customers table, with   	NOT 	keyword
+
+SELECT first_name, country FROM customers WHERE NOT country = 'United Kingdom';
+
+=============================
+provide a simple query for customers table, with LIKE keyword
+
+
+SELECT  * FROM customers WHERE email LIKE '%@gmail.com';
+=============================
+provide a simple query for customers table, with   	ILIKE 	keyword
+
+
+SELECT * FROM customers WHERE first_name ILIKE 'robert';
+=============================
+provide a simple query for customers table, with  ANY 	keyword
+
+SELECT * FROM customers 
+WHERE id = ANY (
+    SELECT customer_id 
+    FROM orders 
+    WHERE total_amount > 2500
+);
+=============================
+provide a simple query for customers table, with  ALL 	keyword
+
+SELECT name, price FROM products
+WHERE price > ALL (
+    SELECT price 
+    FROM products 
+    WHERE category = 'Office Supplies'
+);
+
+=============================
+provide a simple query for customers table, with  > 	keyword
+
+SELECT first_name, last_name, created_at
+FROM customers
+WHERE created_at > '2025-01-01';
+
+=============================
+provide a simple query for customers table, with  < 	keyword
+
+SELECT first_name, last_name, created_at
+FROM customers
+WHERE created_at > '2025-01-01';
+
+=============================
+provide a simple query for customers table, with  <> 	keyword
+
+SELECT  first_name, country 
+FROM customers WHERE country <> 'United Kingdom';
+=============================
+
+provide a simple query for customers table, with   	BETWEEN 	keyword
+
+
+SELECT id FROM customers WHERE id BETWEEN 10 AND 50;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+============================================================
+============================================================
+
+DCL ==> Data Control Language
+
+provide a simple query for customers table, with  GRANT 	keyword
+
+CREATE USER reporting_user WITH PASSWORD 'secure_password_123';
+
+
+GRANT SELECT ON customers TO reporting_user;
+
+=============================
+provide a simple query for customers table, with  REVOKE 	keyword
+
+
+REVOKE DELETE ON customers FROM reporting_user;
+
+REVOKE SELECT ON TABLE public.customers FROM reporting_user;
+
+=============================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+============================================================
+============================================================
+
+JOINS
+
+
+
+
+====================
+provide a simple query for customers table, with JOIN keyword
+
+SELECT 
+    c.first_name, 
+    c.last_name, 
+    o.order_date, 
+    o.total_amount
+FROM customers AS c
+JOIN orders AS o ON c.id = o.customer_id
+LIMIT 10;
+
+
+====================
+provide a simple query for customers table, with all types of JOIN
+
+INNER JOIN ==>
+SELECT c.first_name, c.last_name, o.id AS order_id, o.total_amount
+FROM customers c
+INNER JOIN orders o ON c.id = o.customer_id;
+
+
+LEFT (OUTER) JOIN ==>
+SELECT c.first_name, c.last_name, o.id AS order_id
+FROM customers c
+LEFT JOIN orders o ON c.id = o.customer_id;
+
+RIGHT (OUTER) JOIN ==>
+SELECT c.first_name, o.id AS order_id, o.total_amount
+FROM customers c
+RIGHT JOIN orders o ON c.id = o.customer_id;
+
+
+FULL (OUTER) JOIN ==>
+SELECT c.first_name, o.id AS order_id
+FROM customers c
+FULL OUTER JOIN orders o ON c.id = o.customer_id;
+
+
+CROSS JOIN
+SELECT c.first_name, o.id AS order_id
+FROM customers c
+CROSS JOIN orders o;
+
+====================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+============================================================
+============================================================
+
+Functions ==>
+
+provide a simple query for customers table, with  function AVG()
+
+SELECT AVG(total_amount ) AS average_order FROM orders;
+=============================
+
+provide a simple query for customers table, with  function SUM()
+
+SELECT SUM(total_amount ) AS average_order FROM orders;
+
+=============================
+
+provide a simple query for customers table, with  function COUNT()
+
+
+SELECT COUNT(*) AS total_customer_count FROM customers;
+=============================
+
+provide a simple query for customers table, with  function MIN()
+
+SELECT MIN(created_at) AS first_registration_date FROM customers;
+
+=============================
+
+provide a simple query for customers table, with  function MAX()
+
+SELECT MAX(created_at) AS latest_registration FROM customers;
+
+=============================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+============================================================
+============================================================
+
+Window Functions ==>
+
+provide a simple query for customers table, with  window function ROW_NUMBER()
+
+SELECT 
+    ROW_NUMBER() OVER(ORDER BY created_at ASC) AS customer_sequence,
+    first_name, 
+    last_name, 
+    created_at
+FROM customers;
+
+=============================
+provide a simple query for customers table, with  window function RANK()
+
+WITH RankedCustomers AS (
+    SELECT 
+        RANK() OVER(PARTITION BY product_id  ORDER BY total_amount DESC) AS pos
+    FROM orders
+)
+SELECT * FROM RankedCustomers WHERE pos <= 3;
+
+=============================
+
+provide a simple query for customers table, with  window function NTILE()
+
+SELECT id, customer_id, total_amount,
+NTILE(4) OVER(ORDER BY total_amount DESC) AS order_value_quartile
+FROM orders;
+
+=============================
+
+provide a simple query for customers table, with  window function LAG()
+
+SELECT id,  customer_id,  total_amount, order_date,
+LAG(total_amount) OVER(PARTITION BY customer_id ORDER BY order_date) AS previous_order_amount
+FROM orders;
+=============================
+
+provide a simple query for customers table, with  window function LEAD()
+
+SELECT id, customer_id, total_amount, order_date,
+LEAD(total_amount) OVER(PARTITION BY customer_id ORDER BY order_date) AS next_order_amount
+FROM orders;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+============================================================
+============================================================
+
+
+
+
+
+TCL - Transaction Control Language
+
+
+provide a simple query for customers table, with  keyword BEGIN TRANSACTION
+provide a simple query for customers table, with  keyword COMMIT
+
+fundamental concept in database integrity known as ACID properties
+
+ALTER TABLE orders  ADD COLUMN status VARCHAR(20);
+ALTER TABLE public.orders  ADD COLUMN status VARCHAR(20);
+
+BEGIN;
+UPDATE public.orders  SET  status = 'Premium'  WHERE total_amount > 1000;
+COMMIT;
+
+=============================
+
+provide a simple query for customers table, with  keyword ROLLBACK
+
+command is used to undo all changes made during the current transaction
+
+BEGIN
+UPDATE public.orders SET total_amount = total_amount * 1.1;
+SELECT * FROM public.orders LIMIT 10; -- Inspect the math
+ROLLBACK; -- Undo the changes after inspection
+
+
+=============================
+
+provide a simple query for customers table, with   	COMMIT 	keyword
+
+BEGIN;
+UPDATE public.customers  SET country = 'CA'  WHERE country = 'Canada';
+COMMIT;
+
+SELECT * FROM public.customers;
+=============================
+provide a simple query for customers table, with   	ROLLBACK 	keyword
+
+BEGIN;
+-- Scenario: You accidentally updated ALL orders to 'Refunded' 
+-- instead of just a specific customer's orders.
+UPDATE orders 
+SET status = 'Refunded';
+-- Verifying the mistake (this shows all rows were affected)
+SELECT status, COUNT(*) FROM orders GROUP BY status;
+-- Reverts the table to its state before the BEGIN command
+ROLLBACK;
+
+SELECT * from orders;
+
+=============================
+for orders table
+provide a simple query for customers table, with  keyword SAVEPOINT
+
+BEGIN;
+
+-- Step 1: Create the primary order record
+INSERT INTO orders (customer_id, product_id, amount, status)
+VALUES (101, 50, 200.00, 'Pending');
+
+-- Step 2: Set a savepoint after the successful insert
+SAVEPOINT order_created;
+
+-- Step 3: Attempt a risky update (e.g., applying a specific discount)
+UPDATE orders 
+SET amount = amount - 50 
+WHERE order_id = 500 AND status = 'Pending';
+
+-- Step 4: If the update logic was wrong, undo ONLY the update
+ROLLBACK TO SAVEPOINT order_created;
+
+-- Step 5: The original INSERT is still valid and can be saved
+COMMIT;
+
+
+
+=============================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+============================================================
+============================================================
+
+Other commands
+
+====================
+provide a simple query for customers table, with CASE keyword
+
+SELECT 
+    first_name, 
+    last_name, 
+    country,
+    CASE 
+        WHEN country IN ('USA', 'Canada') THEN 'North America'
+        WHEN country IN ('UK', 'Germany') THEN 'Europe'
+        WHEN country = 'India' THEN 'Asia'
+        ELSE 'Other'
+    END AS market_segment
+FROM customers
+ORDER BY market_segment;
+
+====================
+provide a simple query for customers table, with IS NULL keyword
+
+
+SELECT 
+    id, 
+    email, 
+    first_name, 
+    last_name
+FROM customers
+WHERE first_name IS NULL 
+   OR last_name IS NULL;
+====================
