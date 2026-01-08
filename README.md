@@ -1,6 +1,11 @@
 # SQL-Commands-Encyclopaedia-Simple-to-Advanced
 
 # Google Gemini prompt link : https://gemini.google.com/share/0d05e612bab8
+
+or can refer prompt file
+
+# https://github.com/imademethink/SQL-Commands-Encyclopaedia-Simple-to-Advanced/blob/main/sql_command_prompt.txt
+
 # YouTube video link : https://youtu.be/kQyC_yQKA6E
 
 To practice DB commands:
