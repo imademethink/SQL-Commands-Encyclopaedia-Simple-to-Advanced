@@ -18,3 +18,8 @@ To practice DB commands:
 # Simple to Medium SQL commands
 
 ![sql_query_types_3](https://github.com/user-attachments/assets/942715fe-03a7-46cf-9e70-9b2aae2a2337)
+
+# Many more commands
+
+![sql_query_types_2](https://github.com/user-attachments/assets/9cc3e17b-a6da-4960-ad48-a1757a8472ce)
+
