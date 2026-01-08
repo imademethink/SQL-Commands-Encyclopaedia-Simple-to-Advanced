@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres:alpine
+    container_name: ecommerce_practice
+    restart: always
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=password123
+      - POSTGRES_DB=ecommerce_db
+    ports:
+      - "5432:5432"
+    volumes:
+      # Automatically run the script on first boot
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      # Persist data in a named volume
+      - postgres_practice_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_practice_data:
