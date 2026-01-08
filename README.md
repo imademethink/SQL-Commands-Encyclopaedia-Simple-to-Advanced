@@ -1,7 +1,7 @@
 # SQL-Commands-Encyclopaedia-Simple-to-Advanced
 
 # Google Gemini prompt link : https://gemini.google.com/share/0d05e612bab8
-# YouTube video link : 
+# YouTube video link : https://youtu.be/kQyC_yQKA6E
 
 To practice DB commands:
 
